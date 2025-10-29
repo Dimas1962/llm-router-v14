@@ -26,6 +26,9 @@ pydantic-settings>=2.0.0
 python-multipart>=0.0.6
 httpx>=0.24.0  # for API testing
 
+# Phase 6: Advanced Features (ACTIVE)
+prometheus-client>=0.17.0  # for monitoring metrics
+
 # Development
 # black>=23.0.0
 # flake8>=6.0.0
