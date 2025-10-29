@@ -1,0 +1,54 @@
+# LLM Router v1.4 - Docker Compose
+# Phase 5: Production API Integration
+
+version: '3.8'
+
+services:
+  router:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: llm-router-v14
+    ports:
+      - "8000:8000"
+    environment:
+      # Server settings
+      - ROUTER_HOST=0.0.0.0
+      - ROUTER_PORT=8000
+      - ROUTER_LOG_LEVEL=INFO
+
+      # Router features
+      - ROUTER_ENABLE_EAGLE=true
+      - ROUTER_ENABLE_MEMORY=true
+      - ROUTER_ENABLE_CARROT=true
+      - ROUTER_ENABLE_CONTEXT_MANAGER=true
+
+      # CORS settings
+      - ROUTER_ENABLE_CORS=true
+      - ROUTER_CORS_ORIGINS=["*"]
+
+      # Memory settings
+      - ROUTER_MEMORY_EMBEDDING_DIM=384
+      - ROUTER_MEMORY_MAX_SIZE=100000
+    volumes:
+      # Mount data directory for memory persistence
+      - router-data:/app/data
+      # Mount logs directory
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - router-network
+
+volumes:
+  router-data:
+    driver: local
+
+networks:
+  router-network:
+    driver: bridge

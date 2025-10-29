@@ -3,6 +3,7 @@ Router Core - Main Routing Logic
 Phase 1: Basic routing based on task classification and complexity
 Phase 2: Eagle ELO + Associative Memory integration
 Phase 3: CARROT Cost-Aware Routing
+Phase 4: Advanced Context Management
 """
 
 from dataclasses import dataclass, field
@@ -17,6 +18,7 @@ from .classifiers import TaskClassifier, ComplexityEstimator, TaskType
 from .memory import AssociativeMemory
 from .eagle import EagleELO
 from .carrot import CARROT
+from .context_manager import ContextManager
 
 
 # Configure logging
@@ -40,13 +42,15 @@ class RouterCore:
     Phase 1: Basic routing based on task analysis
     Phase 2: Eagle ELO + Associative Memory
     Phase 3: CARROT Cost-Aware Routing
+    Phase 4: Advanced Context Management
     """
 
     def __init__(
         self,
         enable_eagle: bool = True,
         enable_memory: bool = True,
-        enable_carrot: bool = True
+        enable_carrot: bool = True,
+        enable_context_manager: bool = True
     ):
         """
         Initialize router with classifiers and model configs
@@ -55,6 +59,7 @@ class RouterCore:
             enable_eagle: Enable Eagle ELO scoring (Phase 2)
             enable_memory: Enable Associative Memory (Phase 2)
             enable_carrot: Enable CARROT cost-aware routing (Phase 3)
+            enable_context_manager: Enable advanced context management (Phase 4)
         """
         self.classifier = TaskClassifier()
         self.complexity_estimator = ComplexityEstimator()
@@ -106,9 +111,27 @@ class RouterCore:
         else:
             self.carrot = None
 
+        # Phase 4: Initialize Context Manager
+        self.enable_context_manager = enable_context_manager
+
+        if enable_context_manager:
+            try:
+                self.context_manager = ContextManager(
+                    enable_progressive=True,
+                    enable_compression=True,
+                    enable_decay_monitor=True
+                )
+                logger.info("Context Manager initialized")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Context Manager: {e}. Using basic context analysis.")
+                self.context_manager = None
+                self.enable_context_manager = False
+        else:
+            self.context_manager = None
+
         logger.info(
-            "RouterCore initialized with %d models (Eagle=%s, Memory=%s, CARROT=%s)",
-            len(MODELS), self.enable_eagle, self.enable_memory, self.enable_carrot
+            "RouterCore initialized with %d models (Eagle=%s, Memory=%s, CARROT=%s, ContextMgr=%s)",
+            len(MODELS), self.enable_eagle, self.enable_memory, self.enable_carrot, self.enable_context_manager
         )
 
     async def route(
@@ -428,6 +451,28 @@ class RouterCore:
             - complexity: Overall complexity
             - decay_risk: Risk of context decay (0.0 - 1.0)
         """
+        # Phase 4: Use advanced Context Manager if enabled
+        if self.enable_context_manager and self.context_manager:
+            complexity = self.complexity_estimator.estimate(query, session_history)['overall']
+
+            analysis = self.context_manager.analyze_context(
+                query=query,
+                session_history=session_history,
+                complexity=complexity,
+                model_id=None  # No specific model yet
+            )
+
+            return {
+                'total_size': analysis.total_size,
+                'required_window': analysis.required_window,
+                'complexity': analysis.complexity,
+                'decay_risk': analysis.decay_risk,
+                'truncation_needed': analysis.truncation_needed,
+                'compression_recommended': analysis.compression_recommended,
+                'suggested_models': analysis.suggested_models
+            }
+
+        # Fallback: Basic context analysis (Phase 1)
         # Calculate total context size
         total_size = len(query)
         if session_history:
