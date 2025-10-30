@@ -1,0 +1,3 @@
+[console_scripts]
+benchmark-router = benchmark_unified:main
+unified-router = src.unified.unified_router:main
