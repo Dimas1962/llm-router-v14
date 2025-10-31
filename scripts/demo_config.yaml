@@ -1,0 +1,164 @@
+# Demo Configuration for Unified Router v2.0
+# Used by demo scripts for consistent settings
+
+demo:
+  # General settings
+  title: "Unified LLM Router v2.0.0"
+  version: "2.0.0"
+  duration: 60  # Total duration in seconds
+
+  # Output settings
+  output:
+    html: "demo_output.html"
+    svg: "demo_output.svg"
+    gif: "demo.gif"
+    mp4: "demo.mp4"
+
+  # Console settings
+  console:
+    width: 100
+    record: true
+
+# Scene timings (in seconds)
+scenes:
+  intro: 5
+  initialization: 8
+  quality_routing: 10
+  cost_routing: 9
+  cascade_routing: 8
+  quality_check: 9
+  performance: 10
+  finale: 6
+
+# Router configuration for demo
+router:
+  enable_batching: true
+  enable_quality_check: true
+  enable_snapshots: false
+  enable_monitoring: true
+
+# Demo queries
+queries:
+  quality:
+    text: "Explain quantum entanglement and its implications for quantum computing"
+    strategy: "quality_focused"
+    expected_model: "qwen3-next-80b"
+
+  cost:
+    text: "Write a Python function to sort a list using merge sort"
+    strategy: "cost_aware"
+    budget: 0.05
+    expected_model: "qwen2.5-coder-7b"
+
+  cascade:
+    text: "Hello, how are you?"
+    strategy: "cascade"
+    expected_model: "qwen2.5-coder-7b"
+    expected_tier: 1
+
+  balanced:
+    text: "Refactor this code to use async/await"
+    strategy: "balanced"
+    expected_model: "qwen2.5-coder-32b"
+
+# Model configurations for demo display
+models:
+  - name: "qwen3-next-80b"
+    elo_rating: 1842
+    quality: 0.90
+    cost: 0.12
+    tier: 3
+
+  - name: "qwen2.5-coder-32b"
+    elo_rating: 1735
+    quality: 0.80
+    cost: 0.05
+    tier: 2
+
+  - name: "qwen2.5-coder-7b"
+    elo_rating: 1690
+    quality: 0.70
+    cost: 0.02
+    tier: 1
+
+  - name: "deepseek-coder-16b"
+    elo_rating: 1690
+    quality: 0.77
+    cost: 0.04
+    tier: 2
+
+# Performance metrics for display
+performance:
+  throughput:
+    value: 7.84
+    unit: "QPS"
+    target: 5.0
+
+  latency:
+    p50: 128
+    p95: 285
+    p99: 450
+    unit: "ms"
+    target_p50: 200
+    target_p95: 300
+
+  cache_hit_rate:
+    value: 82
+    unit: "%"
+    target: 80
+
+  success_rate:
+    value: 100
+    unit: "%"
+    target: 95
+
+  memory:
+    value: 1.2
+    unit: "GB"
+    target: 2.0
+
+# Quality check thresholds
+quality_check:
+  focus_threshold: 6.0
+  result_threshold: 6.0
+  fact_verification_threshold: 70
+
+# Component list for initialization display
+components:
+  - name: "Context Manager v2"
+    description: "Advanced caching"
+
+  - name: "Runtime Adapter"
+    description: "Dynamic optimization"
+
+  - name: "Self-Check System"
+    description: "Quality verification"
+
+  - name: "Eagle ELO"
+    description: "Quality-focused routing"
+
+  - name: "CARROT"
+    description: "Cost-aware optimization"
+
+  - name: "Cascade Router"
+    description: "Multi-tier fallback"
+
+  - name: "Batching Layer"
+    description: "Throughput boost"
+
+  - name: "State Snapshot"
+    description: "Debug & rollback"
+
+# GIF optimization settings
+gif_optimization:
+  colors: 256
+  optimization_level: 3  # O1-O3 for gifsicle
+  max_size_mb: 5
+  fps: 10
+
+# Video encoding settings (ffmpeg)
+video:
+  codec: "libx264"
+  crf: 23  # Constant rate factor (lower = better quality)
+  preset: "medium"
+  fps: 30
