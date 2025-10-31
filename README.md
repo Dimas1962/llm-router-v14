@@ -34,6 +34,27 @@
 
 ---
 
+## 🎬 Demo
+
+![Unified Router v2.0 Demo](assets/demo_preview.png)
+
+*Showcasing Unified Router in action: Quality Routing (Eagle ELO), Cost Optimization (CARROT), Cascade Routing, and Self-Check Quality Verification*
+
+### Try it yourself:
+
+```bash
+# Run automated demo (8 scenes, 65 seconds)
+source venv/bin/activate
+python scripts/demo_recording.py
+
+# Run interactive demo for live presentations
+python scripts/demo_live.py
+```
+
+📖 **Complete Guide:** See [DEMO_GUIDE.md](docs/DEMO_GUIDE.md) for detailed instructions on running demos and creating animated GIFs.
+
+---
+
 ## 🎯 Overview
 
 Unified Router v2.0 is a **production-ready LLM routing system** that intelligently selects the optimal model for each request based on quality, cost, and performance requirements. It seamlessly integrates 21 components from v1.4 and v2.0 into a unified 7-step pipeline.

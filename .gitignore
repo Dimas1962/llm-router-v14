@@ -39,16 +39,18 @@ htmlcov/
 *.cover
 .hypothesis/
 
-# Demo outputs (generated files)
-demo_output.html
-demo_output.svg
-demo_preview.png
-demo_thumbnail.png
-demo.gif
-demo_optimized.gif
-demo.mp4
-demo_optimized.mp4
-demo_session.cast
+# Demo outputs (generated files - local only, in root)
+/demo_output.html
+/demo_output.svg
+/demo_preview.png
+/demo_thumbnail.png
+/demo.gif
+/demo_optimized.gif
+/demo.mp4
+/demo_optimized.mp4
+/demo_session.cast
+
+# Assets folder is committed to repo (not ignored)
 
 # OS
 .DS_Store
